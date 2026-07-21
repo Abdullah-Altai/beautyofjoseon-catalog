@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Beauty Catalog">
+  <meta name="description" content="كتالوك منتجات العناية والجمال">
+  <title>Beauty of Joseon Iraq | Catalog</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css?v=catalog-20260721">
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-live="polite">
+    <img src="beauty-logo.png" alt="">
+    <span>جاري تحميل الكتالوك...</span>
+  </div>
+
+  <header id="siteHeader" class="site-header">
+    <div class="topbar shell">
+      <a class="identity" href="#top" aria-label="الصفحة الرئيسية">
+        <img id="headerLogo" src="beauty-logo.png" alt="Beauty of Joseon Iraq">
+        <span><b id="brandName">بيوتي أوف جوسون العراق</b><small id="brandTagline">كتالوك منتجات العناية والجمال</small></span>
+      </a>
+      <div class="header-actions">
+        <div id="languageSwitch" class="language-switch" aria-label="اختيار اللغة">
+          <button type="button" data-lang="ar" class="active">عربي</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <a id="whatsappLink" class="whatsapp-link" target="_blank" rel="noopener">تواصل عبر واتساب</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="coverSection" class="cover shell page-section">
+      <div class="cover-copy">
+        <span id="catalogEyebrow" class="eyebrow">كتالوك المنتجات</span>
+        <h1 id="coverTitle">كل منتجات العناية<br>مرتبة بمكان واحد</h1>
+        <p id="coverText">تصفح الأقسام وشاهد تفاصيل كل منتج بسهولة.</p>
+        <a id="browseButton" class="browse-button" href="#catalogSection">تصفح المنتجات</a>
+      </div>
+      <div id="coverVisual" class="cover-visual">
+        <span class="cover-orbit orbit-one"></span><span class="cover-orbit orbit-two"></span>
+        <img id="coverLogo" src="beauty-logo.png" alt="">
+      </div>
+    </section>
+
+    <section id="adsSection" class="shell page-section hidden">
+      <div id="adsSlider" class="ads-slider"></div>
+      <div id="sliderDots" class="slider-dots"></div>
+    </section>
+
+    <section id="catalogSection" class="catalog-section shell page-section">
+      <div class="catalog-toolbar">
+        <div>
+          <span id="catalogKicker" class="section-kicker">تصفح حسب القسم</span>
+          <h2 id="catalogTitle">الكتالوك</h2>
+        </div>
+        <label id="searchBox" class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+          <input id="searchInput" type="search" placeholder="ابحث عن منتج أو كود">
+        </label>
+      </div>
+      <nav id="categoryNav" class="category-nav" aria-label="أقسام الكتالوك"></nav>
+      <div id="categorySections" class="category-sections"></div>
+      <div id="emptyState" class="empty-state hidden">
+        <span>⌕</span><h3>لا توجد منتجات</h3><p>جرّب كلمة بحث ثانية أو اختر قسماً مختلفاً.</p>
+      </div>
+    </section>
+
+    <section id="aboutSection" class="about-section shell page-section">
+      <div><span id="aboutKicker" class="section-kicker">عن الكتالوك</span><h2 id="aboutTitle">من نحن</h2></div>
+      <p id="aboutText"></p>
+      <a id="aboutWhatsapp" target="_blank" rel="noopener">للاستفسار عبر واتساب ←</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell"><span id="footerName">Beauty of Joseon Iraq</span><span id="footerYear"></span></div></footer>
+
+  <div id="productModal" class="product-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+    <button class="modal-backdrop" type="button" data-close-modal aria-label="إغلاق"></button>
+    <article class="product-dialog">
+      <button class="modal-close" type="button" data-close-modal aria-label="إغلاق">×</button>
+      <div class="modal-gallery">
+        <img id="modalImage" alt="">
+        <button id="modalPrev" class="gallery-arrow previous" type="button" aria-label="السابق">‹</button>
+        <button id="modalNext" class="gallery-arrow next" type="button" aria-label="التالي">›</button>
+        <div id="modalThumbs" class="modal-thumbs"></div>
+      </div>
+      <div class="modal-details">
+        <span id="modalCategory" class="modal-category"></span>
+        <h2 id="modalProductName"></h2>
+        <span id="modalCode" class="modal-code"></span>
+        <p id="modalDescription"></p>
+        <strong id="modalPrice" class="modal-price"></strong>
+      </div>
+    </article>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=catalog-20260721"></script>
+  <script src="supabase-bridge.js?v=catalog-20260721"></script>
+  <script src="store.js?v=catalog-20260721"></script>
+  <script src="app.js?v=catalog-20260721"></script>
+</body>
+</html>

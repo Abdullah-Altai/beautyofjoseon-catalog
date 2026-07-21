@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>إدارة كتالوك Beauty of Joseon Iraq</title>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="stylesheet" href="admin.css?v=catalog-20260721">
+</head>
+<body>
+  <section id="loginView" class="login-view">
+    <form id="loginForm" class="login-card">
+      <img src="beauty-logo.png" alt="" class="login-logo">
+      <span class="login-kicker">CATALOG ADMIN</span>
+      <h1>لوحة إدارة الكتالوك</h1>
+      <p>الدخول مخصص لحساب الأدمن المعتمد فقط</p>
+      <label>البريد الإلكتروني<input id="loginUser" type="email" value="Altai0193@gmail.com" autocomplete="username" readonly required></label>
+      <label>كلمة المرور<input id="loginPass" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required></label>
+      <button id="loginButton" type="submit">تسجيل الدخول</button>
+      <small>أنشئ هذا الحساب أولاً من Supabase Authentication</small>
+      <div id="loginError" role="alert"></div>
+    </form>
+  </section>
+
+  <div id="adminApp" class="admin-app hidden">
+    <aside class="sidebar">
+      <a class="admin-brand" href="index.html" target="_blank">
+        <img src="beauty-logo.png" alt=""><span><b>إدارة الكتالوك</b><small>Beauty of Joseon Iraq</small></span>
+      </a>
+      <nav>
+        <button class="nav active" type="button" data-tab="dashboard"><span>⌂</span> نظرة عامة</button>
+        <button class="nav" type="button" data-tab="products"><span>◫</span> المنتجات</button>
+        <button class="nav" type="button" data-tab="categories"><span>▦</span> الأقسام</button>
+        <button class="nav" type="button" data-tab="ads"><span>▣</span> الإعلانات</button>
+        <button class="nav" type="button" data-tab="content"><span>✎</span> محتوى الصفحة</button>
+        <button class="nav" type="button" data-tab="appearance"><span>◉</span> الشكل والترتيب</button>
+        <button class="nav" type="button" data-tab="preview"><span>↗</span> معاينة الموقع</button>
+        <button class="nav" type="button" data-tab="security"><span>⌾</span> الدخول والأمان</button>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank">فتح الكتالوك ↗</a>
+        <button id="logoutBtn" type="button">تسجيل الخروج</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <div><span class="header-kicker">لوحة التحكم</span><h2 id="pageTitle">نظرة عامة</h2></div>
+        <div class="header-actions"><span id="saveState" class="save-state">كل التغييرات محفوظة</span><button id="quickPreview" type="button">معاينة</button></div>
+      </header>
+
+      <section id="dashboard" class="tab active">
+        <div class="stats">
+          <article><span>المنتجات</span><b id="statProducts">0</b><small id="statVisibleProducts">0 ظاهرة</small></article>
+          <article><span>الأقسام</span><b id="statCategories">0</b><small>أقسام الكتالوك</small></article>
+          <article><span>الإعلانات</span><b id="statAds">0</b><small>بنرات الصفحة</small></article>
+          <article><span>حالة الربط</span><b id="statCloud" class="status-word">...</b><small id="cloudStatus">جاري الفحص</small></article>
+        </div>
+        <div class="panel welcome-panel">
+          <div><span class="panel-kicker">كتالوك بدون سلة</span><h3>تحكم كامل بكل محتوى الصفحة</h3><p>أضف المنتجات والأقسام، غيّر الغلاف والنصوص والألوان، ثم شاهد النتيجة من صفحة المعاينة.</p></div>
+          <button type="button" data-go-tab="products">+ إضافة أول منتج</button>
+        </div>
+        <div class="dashboard-grid">
+          <div class="panel"><h3>اختصارات</h3><div class="shortcut-grid"><button type="button" data-go-tab="products">إدارة المنتجات</button><button type="button" data-go-tab="categories">ترتيب الأقسام</button><button type="button" data-go-tab="content">تعديل الغلاف</button><button type="button" data-go-tab="preview">معاينة مباشرة</button></div></div>
+          <div class="panel"><h3>نسخة احتياطية</h3><p class="muted">تنزيل نسخة JSON من المنتجات وإعدادات الصفحة.</p><button id="exportBtn" class="secondary-button" type="button">تنزيل النسخة الاحتياطية</button></div>
+        </div>
+      </section>
+
+      <section id="products" class="tab">
+        <div class="section-top"><div><h3>المنتجات</h3><p>تظهر المنتجات تلقائياً داخل قسمها في صفحة واحدة.</p></div><button id="addProduct" type="button">+ إضافة منتج</button></div>
+        <div class="admin-search"><input id="productAdminSearch" type="search" placeholder="ابحث عن منتج أو كود..."><select id="productCategoryFilter"><option value="all">كل الأقسام</option></select></div>
+        <div id="productsAdmin" class="cards-list"></div>
+      </section>
+
+      <section id="categories" class="tab">
+        <div class="section-top"><div><h3>الأقسام</h3><p>كل قسم يظهر كسطر مستقل مثل صفحات الكتالوك.</p></div><button id="addCategory" type="button">+ إضافة قسم</button></div>
+        <div id="categoriesAdmin" class="category-admin-list"></div>
+      </section>
+
+      <section id="ads" class="tab">
+        <div class="section-top"><div><h3>الإعلانات</h3><p>بنرات اختيارية أعلى الكتالوك، صورة أو فيديو.</p></div><button id="addAd" type="button">+ إضافة إعلان</button></div>
+        <div id="adsAdmin" class="cards-list"></div>
+      </section>
+
+      <section id="content" class="tab">
+        <div class="section-top"><div><h3>محتوى الصفحة</h3><p>الأسماء، الغلاف، العناوين، التواصل وقسم من نحن.</p></div><button id="saveContent" type="button">حفظ المحتوى</button></div>
+        <form id="contentForm" class="settings-layout">
+          <div class="panel form-section">
+            <div class="form-section-title"><span>01</span><div><h4>هوية الموقع</h4><p>اسم الكتالوك والشعار والوصف المختصر.</p></div></div>
+            <div class="form-grid">
+              <label>اسم الموقع بالعربي<input name="nameAr"></label><label>Site name in English<input name="nameEn"></label>
+              <label>الوصف المختصر بالعربي<input name="taglineAr"></label><label>Short tagline in English<input name="taglineEn"></label>
+              <label>عبارة الكتالوك بالعربي<input name="catalogLabelAr"></label><label>Catalog label in English<input name="catalogLabelEn"></label>
+              <label class="wide">رابط الشعار<input name="logoUrl" placeholder="beauty-logo.png أو https://..."></label>
+              <label class="file-field wide">رفع شعار جديد<input name="logoFile" type="file" accept="image/*"><small>PNG أو WEBP بخلفية شفافة يفضل</small></label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>02</span><div><h4>غلاف الصفحة</h4><p>أول جزء يشوفه الزائر.</p></div></div>
+            <div class="form-grid">
+              <label>عنوان الغلاف عربي<textarea name="coverTitleAr"></textarea></label><label>Cover title English<textarea name="coverTitleEn"></textarea></label>
+              <label>نص الغلاف عربي<textarea name="coverTextAr"></textarea></label><label>Cover text English<textarea name="coverTextEn"></textarea></label>
+              <label>زر التصفح عربي<input name="browseLabelAr"></label><label>Browse button English<input name="browseLabelEn"></label>
+              <label class="wide">رابط صورة الغلاف<input name="coverImage" placeholder="اتركه فارغاً لاستخدام الشعار"></label>
+              <label class="file-field wide">رفع صورة غلاف<input name="coverFile" type="file" accept="image/*"><small>يفضل 1200 × 900 بكسل</small></label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>03</span><div><h4>عناوين الكتالوك</h4><p>النصوص فوق الأقسام.</p></div></div>
+            <div class="form-grid">
+              <label>النص الصغير عربي<input name="catalogKickerAr"></label><label>Small label English<input name="catalogKickerEn"></label>
+              <label>عنوان الكتالوك عربي<input name="catalogTitleAr"></label><label>Catalog title English<input name="catalogTitleEn"></label>
+              <label>عنوان من نحن عربي<input name="aboutTitleAr"></label><label>About title English<input name="aboutTitleEn"></label>
+              <label>النص الصغير لمن نحن<input name="aboutKickerAr"></label><label>About small label English<input name="aboutKickerEn"></label>
+              <label class="wide">من نحن بالعربي<textarea name="aboutAr"></textarea></label><label class="wide">About us in English<textarea name="aboutEn"></textarea></label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>04</span><div><h4>التواصل والأسعار</h4><p>واتساب والعملة الظاهرة.</p></div></div>
+            <div class="form-grid">
+              <label>رقم واتساب الدولي<input name="whatsapp" placeholder="9647500000000"></label><label>العملة بالعربي<input name="currencyAr"></label>
+              <label>زر واتساب عربي<input name="whatsappLabelAr"></label><label>WhatsApp button English<input name="whatsappLabelEn"></label>
+              <label>العملة بالإنجليزي<input name="currencyEn"></label>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section id="appearance" class="tab">
+        <div class="section-top"><div><h3>الشكل والترتيب</h3><p>تحكم بطريقة ظهور كل جزء من الصفحة.</p></div><button id="saveAppearance" type="button">حفظ الشكل</button></div>
+        <form id="appearanceForm" class="settings-layout">
+          <div class="panel form-section">
+            <div class="form-section-title"><span>01</span><div><h4>إظهار وإخفاء</h4><p>اختر العناصر التي تريدها بالواجهة.</p></div></div>
+            <div class="toggle-grid">
+              <label><input name="showLanguages" type="checkbox"><span></span>اللغات</label>
+              <label><input name="showHeader" type="checkbox"><span></span>رأس الصفحة</label>
+              <label><input name="showWhatsApp" type="checkbox"><span></span>زر واتساب</label>
+              <label><input name="showSearch" type="checkbox"><span></span>البحث</label>
+              <label><input name="showCover" type="checkbox"><span></span>الغلاف</label>
+              <label><input name="showAds" type="checkbox"><span></span>الإعلانات</label>
+              <label><input name="showAbout" type="checkbox"><span></span>من نحن</label>
+              <label><input name="showPrices" type="checkbox"><span></span>الأسعار</label>
+              <label><input name="showDescriptions" type="checkbox"><span></span>الوصف</label>
+              <label><input name="showProductCodes" type="checkbox"><span></span>أكواد المنتجات</label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>02</span><div><h4>الألوان</h4><p>الصفحة تبقى بيضاء وتقدر تغيّر اللون الرئيسي.</p></div></div>
+            <div class="form-grid colors-grid">
+              <label>اللون الرئيسي<input name="primary" type="color"></label><label>اللون المساعد<input name="accent" type="color"></label>
+              <label>لون الخلفية<input name="bg" type="color"></label><label>لون النص<input name="textColor" type="color"></label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>03</span><div><h4>الشبكة والأحجام</h4><p>صغّر أو كبّر بطاقات المنتجات.</p></div></div>
+            <div class="form-grid">
+              <label>عرض الصفحة<input name="pageWidth" type="number" min="900" max="1800"></label><label>عدد المنتجات بالكمبيوتر<input name="productColumnsDesktop" type="number" min="3" max="8"></label>
+              <label>عدد المنتجات بالموبايل<input name="productColumnsMobile" type="number" min="2" max="4"></label><label>تدوير بطاقة القسم<input name="cardRadius" type="number" min="0" max="40"></label>
+              <label>تدوير صورة المنتج<input name="imageRadius" type="number" min="0" max="40"></label><label>المسافة بين الأقسام<input name="sectionGap" type="number" min="10" max="80"></label>
+              <label>نوع الخط<select name="fontFamily"><option value="Tahoma">Tahoma</option><option value="Arial">Arial</option><option value="Verdana">Verdana</option><option value="Georgia">Georgia</option></select></label>
+            </div>
+          </div>
+          <div class="panel form-section">
+            <div class="form-section-title"><span>04</span><div><h4>ترتيب أجزاء الصفحة</h4><p>رتب الغلاف والإعلانات والكتالوك ومن نحن.</p></div></div>
+            <div class="form-grid order-grid">
+              <label>الأول<select name="section1"></select></label><label>الثاني<select name="section2"></select></label>
+              <label>الثالث<select name="section3"></select></label><label>الرابع<select name="section4"></select></label>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section id="preview" class="tab">
+        <div class="section-top"><div><h3>معاينة الموقع</h3><p>المعاينة تعرض آخر نسخة محفوظة.</p></div><div class="button-row"><button id="refreshPreview" type="button" class="secondary-button">تحديث</button><a href="index.html" target="_blank" class="link-button">فتح بالحجم الكامل ↗</a></div></div>
+        <div class="preview-frame"><div class="browser-bar"><i></i><i></i><i></i><span>index.html</span></div><iframe id="homepagePreview" src="index.html" title="معاينة الكتالوك"></iframe></div>
+      </section>
+
+      <section id="security" class="tab">
+        <div class="panel security-panel">
+          <span class="security-icon">✓</span><h3>حساب الأدمن المحدد</h3><strong>Altai0193@gmail.com</strong>
+          <p>لوحة الإدارة وسياسات Supabase تسمح بالتعديل لهذا البريد فقط. إنشاء الحساب وتغيير كلمة المرور يتمان من Authentication داخل Supabase.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="editorModal" class="modal hidden">
+    <button id="modalBackdrop" type="button" class="modal-backdrop" aria-label="إغلاق"></button>
+    <article class="modal-card">
+      <button id="closeEditor" class="modal-close" type="button">×</button>
+      <div class="modal-title"><span>تحرير الكتالوك</span><h3 id="editorTitle"></h3></div>
+      <form id="editorForm" class="form-grid"></form>
+    </article>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=catalog-20260721"></script>
+  <script src="supabase-bridge.js?v=catalog-20260721"></script>
+  <script src="store.js?v=catalog-20260721"></script>
+  <script src="admin.js?v=catalog-20260721"></script>
+</body>
+</html>
