@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>إدارة Beauty of Joseon Iraq</title><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="loginView" class="login-view">
+ <form id="loginForm" class="login-card">
+  <div class="admin-logo"><img src="beauty-logo.png" alt="الشعار"></div><h1>لوحة إدارة Beauty of Joseon Iraq</h1><p>تسجيل دخول الإدارة</p>
+  <input id="loginUser" type="email" placeholder="بريد الأدمن الإلكتروني" autocomplete="username" required>
+  <input id="loginPass" type="password" placeholder="كلمة المرور" autocomplete="current-password" required>
+  <button>دخول</button><small>سجّل بحساب الأدمن الذي تنشئه في Supabase Authentication</small><div id="loginError"></div>
+ </form>
+</div>
+
+<div id="adminApp" class="hidden">
+ <aside>
+  <div class="side-brand"><span>BOJ</span><b>إدارة Beauty of Joseon Iraq</b></div>
+  <nav>
+   <button class="nav active" data-tab="dashboard">الرئيسية</button>
+   <button class="nav" data-tab="products">المنتجات</button>
+   <button class="nav" data-tab="orders">الطلبات</button>
+   <button class="nav" data-tab="categories">الأقسام</button>
+   <button class="nav" data-tab="ads">الإعلانات</button>
+   <button class="nav" data-tab="settings">إعدادات الموقع</button>
+   <button class="nav" data-tab="security">الدخول والأمان</button>
+   <button class="nav" data-tab="homepage">تعديل الصفحة الرئيسية</button>
+  </nav>
+  <a href="index.html" target="_blank">فتح المتجر ↗</a>
+  <button id="logoutBtn" class="logout">تسجيل الخروج</button>
+ </aside>
+
+ <main>
+  <header><div><h2 id="pageTitle">الرئيسية</h2><p>المنتجات والصور والطلبات محفوظة أونلاين في Supabase.</p></div><button id="saveAll" class="save">حفظ إعدادات الموقع</button></header>
+
+  <section id="dashboard" class="tab active">
+   <div class="stats">
+    <div><b id="statProducts">0</b><span>المنتجات</span></div><div><b id="statAds">0</b><span>الإعلانات</span></div><div><b id="statCats">0</b><span>الأقسام</span></div><div><b id="statStock">0</b><span>المخزون الكلي</span></div>
+   </div>
+   <div class="panel"><h3>حالة الربط</h3><p id="cloudStatus">جاري فحص Supabase...</p></div>
+   <div class="panel"><h3>نسخة احتياطية</h3><div class="row"><button id="exportBtn">تصدير البيانات</button><label class="file-btn">استيراد البيانات<input id="importInput" type="file" accept=".json"></label><button id="resetBtn" class="danger">استعادة البيانات الافتراضية</button></div></div>
+  </section>
+
+  <section id="products" class="tab">
+   <div class="section-top"><h3>إدارة المنتجات</h3><button id="addProduct">+ إضافة منتج</button></div>
+   <div id="productsAdmin" class="cards-list"></div>
+  </section>
+
+
+  <section id="orders" class="tab">
+   <div class="section-top"><h3>الطلبات</h3><button id="refreshOrders">تحديث</button></div>
+   <div id="ordersAdmin" class="cards-list"></div>
+  </section>
+
+  <section id="categories" class="tab">
+   <div class="section-top"><h3>إدارة الأقسام</h3><button id="addCategory">+ إضافة قسم</button></div>
+   <div id="categoriesAdmin" class="cards-list compact"></div>
+  </section>
+
+  <section id="ads" class="tab">
+   <div class="section-top"><h3>الإعلانات المتحركة</h3><button id="addAd">+ إضافة إعلان</button></div>
+   <div id="adsAdmin" class="cards-list"></div>
+  </section>
+
+  <section id="settings" class="tab">
+   <form id="settingsForm" class="panel form-grid">
+    <label>اسم الموقع بالعربي<input name="nameAr"></label><label>اسم الموقع بالإنجليزي<input name="nameEn"></label>
+    <label>الوصف القصير بالعربي<input name="taglineAr"></label><label>الوصف القصير بالإنجليزي<input name="taglineEn"></label>
+    <label class="wide">من نحن بالعربي<textarea name="aboutAr"></textarea></label><label class="wide">من نحن بالإنجليزي<textarea name="aboutEn"></textarea></label>
+    <label>رقم واتساب الدولي<input name="whatsapp" placeholder="9647500000000"></label><label>رمز الشعار<input name="logoText" maxlength="3"></label>
+    <label>العملة بالعربي<input name="currencyAr"></label><label>العملة بالإنجليزي<input name="currencyEn"></label>
+    <label>اللون الرئيسي<input name="primary" type="color"></label><label>اللون المساعد<input name="accent" type="color"></label><label>لون الخلفية<input name="bg" type="color"></label>
+    <label class="check"><input name="showAds" type="checkbox"> إظهار الإعلانات</label><label class="check"><input name="showAbout" type="checkbox"> إظهار من نحن</label>
+   </form>
+  </section>
+
+  <section id="security" class="tab">
+   <div class="panel"><h3>الدخول الآمن</h3><p>حساب الإدارة يُدار من Supabase Authentication. لتغيير كلمة المرور استخدم صفحة Authentication داخل Supabase.</p></div>
+  </section>
+
+  <section id="homepage" class="tab">
+   <div class="section-top"><div><h3>تعديل الصفحة الرئيسية بالشكل</h3><p class="subtext">المعاينة هي نفس صفحة البيع، وكل تغيير يظهر مباشرة بعد الحفظ.</p></div><div class="row"><button id="refreshPreview" type="button">تحديث المعاينة</button><button id="saveHomepage" type="button">حفظ الصفحة</button></div></div>
+   <div class="homepage-editor">
+    <div class="editor-controls">
+     <form id="homepageForm" class="form-grid panel no-margin">
+      <h4 class="wide group-title">إظهار وإخفاء العناصر</h4>
+      <label class="check"><input name="showLanguages" type="checkbox"> اللغات</label>
+      <label class="check"><input name="showHeader" type="checkbox"> رأس الصفحة</label>
+      <label class="check"><input name="showWhatsAppTop" type="checkbox"> زر واتساب العلوي</label>
+      <label class="check"><input name="showSearch" type="checkbox"> البحث</label>
+      <label class="check"><input name="showCategories" type="checkbox"> الأقسام</label>
+      <label class="check"><input name="showCart" type="checkbox"> زر السلة</label>
+      <label class="check"><input name="showAds" type="checkbox"> الإعلانات</label>
+      <label class="check"><input name="showAbout" type="checkbox"> من نحن</label>
+
+      <h4 class="wide group-title">عناوين الصفحة — عربي وإنجليزي</h4>
+      <label>عنوان الإعلانات عربي<input name="offersTitleAr"></label><label>Offers title English<input name="offersTitleEn"></label>
+      <label>عنوان المنتجات عربي<input name="productsTitleAr"></label><label>Products title English<input name="productsTitleEn"></label>
+      <label>عنوان من نحن عربي<input name="aboutTitleAr"></label><label>About title English<input name="aboutTitleEn"></label>
+      <label>نص البحث عربي<input name="searchPlaceholderAr"></label><label>Search text English<input name="searchPlaceholderEn"></label>
+      <label>زر واتساب عربي<input name="whatsappLabelAr"></label><label>WhatsApp button English<input name="whatsappLabelEn"></label>
+
+      <h4 class="wide group-title">الشكل والأحجام</h4>
+      <label>نوع الخط<select name="fontFamily"><option value="Tahoma">Tahoma</option><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Verdana">Verdana</option></select></label>
+      <label>عرض الصفحة<input name="pageWidth" type="number" min="700" max="1600"></label>
+      <label>تدوير بوكس المنتج<input name="cardRadius" type="number" min="0" max="60"></label>
+      <label>عدد المنتجات بالكمبيوتر<input name="productColumnsDesktop" type="number" min="1" max="6"></label>
+      <label>عدد المنتجات بالموبايل<input name="productColumnsMobile" type="number" min="1" max="3"></label>
+      <label>حجم اسم المتجر<input name="heroNameSize" type="number" min="18" max="72"></label>
+      <label>حجم الوصف القصير<input name="taglineSize" type="number" min="10" max="30"></label>
+      <label>حجم عناوين الأقسام<input name="sectionTitleSize" type="number" min="14" max="44"></label>
+      <label>حجم اسم المنتج<input name="productNameSize" type="number" min="11" max="28"></label>
+      <label>ارتفاع الإعلان<input name="adHeight" type="number" min="120" max="500"></label>
+      <label>المسافة بين الأقسام<input name="sectionGap" type="number" min="0" max="100"></label>
+
+      <h4 class="wide group-title">خلفية الصفحة</h4>
+      <label class="wide">رابط صورة الخلفية<input name="backgroundImage" placeholder="https://..."></label>
+      <label>طريقة عرض الخلفية<select name="backgroundFit"><option value="cover">تملأ الشاشة</option><option value="contain">تظهر كاملة</option><option value="auto">الحجم الطبيعي</option></select></label>
+      <label class="wide">رفع صورة خلفية<input id="homepageBgUpload" type="file" accept="image/*"></label>
+
+      <h4 class="wide group-title">ترتيب الأقسام</h4>
+      <label>القسم الأول<select name="section1"><option value="ads">الإعلانات</option><option value="products">المنتجات</option><option value="about">من نحن</option></select></label>
+      <label>القسم الثاني<select name="section2"><option value="ads">الإعلانات</option><option value="products">المنتجات</option><option value="about">من نحن</option></select></label>
+      <label>القسم الثالث<select name="section3"><option value="ads">الإعلانات</option><option value="products">المنتجات</option><option value="about">من نحن</option></select></label>
+     </form>
+    </div>
+    <div class="preview-wrap"><div class="preview-bar"><span>معاينة الصفحة الرئيسية</span><a href="index.html" target="_blank">فتح بالحجم الكامل ↗</a></div><iframe id="homepagePreview" src="index.html"></iframe></div>
+   </div>
+  </section>
+ </main>
+</div>
+
+<div id="editorModal" class="modal hidden"><div class="modal-card"><button id="closeEditor" class="x">✕</button><h3 id="editorTitle"></h3><form id="editorForm" class="form-grid"></form></div></div>
+<div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js?v=beauty-20260717"></script><script src="supabase-bridge.js?v=beauty-20260717"></script><script src="store.js?v=beauty-20260717"></script><script src="admin.js?v=beauty-20260717"></script>
+</body></html>
